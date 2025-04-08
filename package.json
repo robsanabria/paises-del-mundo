@@ -1,0 +1,13 @@
+{
+  "name": "paises-del-mundo",
+  "version": "1.0.0",
+  "description": "Aplicación de búsqueda de países con FlexSearch",
+  "scripts": {
+    "start:backend": "cd backend && node src/server.js",
+    "start:frontend": "cd frontend && npm run dev",
+    "dev": "npm run start:backend & npm run start:frontend"
+  },
+  "devDependencies": {
+    "@vercel/node": "^5.1.14"
+  }
+}

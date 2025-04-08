@@ -1,0 +1,40 @@
+{
+  // Versión de la configuración de Vercel
+  "version": 2,
+  // Definición de cómo construir las diferentes partes del proyecto
+  "builds": [
+    {
+      // Especifica el archivo de entrada para la función serverless del backend
+      "src": "backend/src/server.js",
+      // Indica a Vercel que use el runtime de Node.js para construir esta parte
+      "use": "@vercel/node"
+    },
+    {
+      // Especifica el package.json del frontend como punto de entrada para la build estática
+      "src": "frontend/package.json",
+      // Indica a Vercel que use el builder para sitios estáticos (ejecutará `npm run build`)
+      "use": "@vercel/static-build",
+      // Configuración específica para static-build: indica dónde encontrar los archivos generados
+      "config": { "distDir": "dist" }
+    }
+  ],
+  // Definición de cómo Vercel debe enrutar las peticiones entrantes
+  "routes": [
+    {
+      // Cualquier petición que empiece con /api/ (capturando el resto)
+      "src": "/api/(.*)",
+      // Se redirige internamente a la función serverless generada desde server.js
+      "dest": "/backend/src/server.js"
+    },
+    // Ruta específica para la búsqueda (ya cubierta por la anterior, pero por si acaso)
+    // { "src": "/search", "dest": "/backend/src/server.js" },
+    // Rutas para /countries (si las tuviéramos, actualmente no usadas por FlexSearch)
+    // { "src": "/countries/(.*)", "dest": "/backend/src/server.js" },
+    {
+      // Cualquier otra petición (capturando toda la ruta)
+      "src": "/(.*)",
+      // Se sirve como un archivo estático desde el directorio de build del frontend (`frontend/dist`)
+      "dest": "/frontend/$1"
+    }
+  ]
+}
